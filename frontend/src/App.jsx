@@ -47,7 +47,7 @@ function App() {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/ai/explain-dsa`,
-        { prompt: dsaPrompt }
+        { topic: dsaPrompt }
       );
       setDsaResult(response.data);
     } catch (err) {
