@@ -9,7 +9,7 @@ module.exports.getReview = async (req, res) => {
   }
 
   try {
-    const response = await aiService.generateReview(code);
+    const response = await aiService(code); // ✅ Uses default export
     res.send(response);
   } catch (error) {
     console.error("❌ Error in getReview:", error.message);
@@ -26,7 +26,7 @@ module.exports.explainDSA = async (req, res) => {
   }
 
   try {
-    const explanation = await aiService.explainDSA(topic);
+    const explanation = await aiService(topic, true); // ✅ `true` means it's for DSA
     res.send(explanation);
   } catch (error) {
     console.error("❌ Error in explainDSA:", error.message);

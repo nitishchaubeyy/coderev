@@ -112,5 +112,7 @@ async function generateDSAExplanation(prompt) {
   return result.response.text();
 }
 
-module.exports = (prompt, isDSA = false) => generateContent(prompt, isDSA);
-
+// 🔁 Exported function that smartly delegates the call
+module.exports = async (prompt, isDSA = false) => {
+  return isDSA ? await generateDSAExplanation(prompt) : await generateReview(prompt);
+};
