@@ -63,3 +63,29 @@ main .right{
   overflow: auto;
 
 }
+
+/* Light theme ke liye */
+.light {
+  background-color: #f7f7f7;
+  color: #111;
+}
+
+.light .code {
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+/* Dark theme ke liye */
+.dark {
+  background-color: #121212;
+  color: #eee;
+}
+
+.dark .code {
+  background: #1e1e1e;
+  border: 1px solid #444;
+}
+
+button:hover {
+  opacity: 0.9;
+}
