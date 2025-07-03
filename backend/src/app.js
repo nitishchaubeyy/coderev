@@ -1,17 +1,20 @@
 const express = require('express');
-const aiRoutes = require('./routes/ai.routes')
-const cors = require('cors')
+const aiRoutes = require('./routes/ai.routes');
+const cors = require('cors');
 
-const app= express()
+const app = express();
 
-app.use(cors())
+// ✅ Allow only frontend URLs
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://coderevv.netlify.app']
+}));
 
-app.use(express.json())
+app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+  res.send('Hello World!');
+});
 
-app.use('/ai', aiRoutes)
+app.use('/ai', aiRoutes);
 
-module.exports = app
+module.exports = app;

@@ -9,10 +9,13 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
+  console.log("💡 BACKEND URL:", import.meta.env.VITE_BACKEND_URL);
+
   const [code, setCode] = useState(`function sum(){
   return 1+1
 }`);
   const [review, setreview] = useState(``);
+  const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
@@ -20,11 +23,19 @@ function App() {
   }, []);
 
   async function reviewCode() {
-    const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/ai/get-review`,
-      { code }
-    );
-    setreview(response.data);
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/ai/get-review`,
+        { code }
+      );
+      setreview(response.data);
+    } catch (error) {
+      console.error("Review error:", error);
+      setreview("❌ Review failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -41,7 +52,7 @@ function App() {
           color: darkMode ? "#333" : "#fff",
           border: "none",
           cursor: "pointer",
-          zIndex: 10
+          zIndex: 10,
         }}
       >
         {darkMode ? "🌞 Light Mode" : "🌙 Dark Mode"}
@@ -67,8 +78,11 @@ function App() {
               }}
             />
           </div>
-          <div onClick={reviewCode} className="review">
-            Review
+          <div
+            onClick={!loading ? reviewCode : null}
+            className={`review ${loading ? "disabled" : ""}`}
+          >
+            {loading ? "🔄 Reviewing..." : "🚀 Review"}
           </div>
         </div>
         <div className="right">

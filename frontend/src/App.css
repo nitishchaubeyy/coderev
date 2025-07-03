@@ -89,3 +89,31 @@ main .right{
 button:hover {
   opacity: 0.9;
 }
+
+.review {
+  background: #3b82f6;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: transform 0.2s ease, opacity 0.3s;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.review:hover {
+  transform: scale(1.05);
+}
+
+.review:active {
+  transform: scale(0.95);
+}
+
+.review.disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.7;
+}
