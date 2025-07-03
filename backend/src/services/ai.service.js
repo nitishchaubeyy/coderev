@@ -112,7 +112,5 @@ async function generateDSAExplanation(prompt) {
   return result.response.text();
 }
 
-module.exports = {
-  generateReview,
-  generateDSAExplanation,
-};
+module.exports = (prompt, isDSA = false) => generateContent(prompt, isDSA);
+
