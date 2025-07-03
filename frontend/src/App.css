@@ -117,3 +117,60 @@ button:hover {
   pointer-events: none;
   opacity: 0.7;
 }
+
+.dsa-explainer {
+  margin-top: 30px;
+  padding: 15px;
+  background: #f7f7f7;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.dark .dsa-explainer {
+  background: #1e1e1e;
+  border-color: #444;
+  color: #f2f2f2;
+}
+
+.dsa-explainer h2 {
+  margin-bottom: 10px;
+}
+
+.dsa-explainer textarea {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.dsa-explainer button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.dsa-explainer button:hover {
+  background-color: #45a049;
+}
+
+.dsa-result {
+  margin-top: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  background: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.dark .dsa-result {
+  background: #2a2a2a;
+  border-color: #555;
+  color: #eee;
+}
+

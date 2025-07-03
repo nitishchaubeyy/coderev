@@ -2,7 +2,8 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_KEY);
 
-const model = genAI.getGenerativeModel({
+// Existing Model for Code Review
+const reviewModel = genAI.getGenerativeModel({
   model: "gemini-2.0-flash",
   systemInstruction: `
 AI System Instruction: Senior Code Reviewer (7+ Years of Experience)
@@ -74,36 +75,44 @@ Tumhara mission hai: har code ko high standards pe evaluate karna — taaki deve
 `
 });
 
-async function generateContent(prompt) {
-  const result = await model.generateContent(prompt);
+// New Model for DSA Explanation
+const dsaModel = genAI.getGenerativeModel({
+  model: "gemini-2.0-flash",
+  systemInstruction: `
+You are a skilled software mentor with deep knowledge of Data Structures and Algorithms (DSA). Your role is to explain the logic, purpose, and complexity of any given DSA code in clear Hinglish (Hindi + English mix), especially for students or beginners.
+
+💡 Guidelines:
+- Start with identifying which DSA concept is being used (e.g., binary search, stack, recursion).
+- Explain the *purpose* of the code (iska kaam kya hai).
+- Explain the *logic* step-by-step (kaise kaam karta hai).
+- Share time & space complexity if applicable.
+- Use real-world analogies where useful.
+- Focus on friendly tone but clear explanation.
+
+🎯 Example Output:
+- Code Type: Depth-First Search (DFS)
+- Purpose: Graph ke sare nodes visit karne ke liye DFS use ho raha hai.
+- Logic: Ek stack-like recursive function se har node ko visit kiya ja raha hai jab tak sare adjacent nodes explore na ho jayein.
+- Time Complexity: O(V + E), jaha V = vertices aur E = edges
+- Space: Call stack ke through O(V) tak jaa sakta hai (worst case)
+- Real Life Analogy: Jaise ek maze me har gali explore karte hain, waisa hi DFS ek rasta puri tarah explore karta hai.
+
+👉 Reply strictly in Hinglish for friendly understanding.
+`
+});
+
+// Functions to generate content
+async function generateReview(prompt) {
+  const result = await reviewModel.generateContent(prompt);
   return result.response.text();
 }
 
-module.exports = generateContent;
+async function generateDSAExplanation(prompt) {
+  const result = await dsaModel.generateContent(prompt);
+  return result.response.text();
+}
 
-/*
-📌 Example Prompts You Can Try:
-
-1. Basic JS Function:
-generateContent("Review this function and suggest improvements: function sum(a, b) { return a + b }")
-
-2. Async Fetch Code:
-generateContent("Check this code and tell me if it's handling async and errors properly:
-function fetchData() {
-  let data = fetch('/api/data').then(response => response.json());
-  return data;
-}")
-
-3. SQL Injection Test:
-generateContent("Is this code safe from SQL injection?
-app.get('/user', (req, res) => {
-  db.query('SELECT * FROM users WHERE username = "' + req.query.name + '"');
-});")
-
-4. React Code:
-generateContent("React component ka code review karo aur improvements suggest karo:
-function MyButton() {
-  const [count, setCount] = useState(0);
-  return <button onClick={() => setCount(count + 1)}>Click {count}</button>;
-}")
-*/
+module.exports = {
+  generateReview,
+  generateDSAExplanation,
+};
