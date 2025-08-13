@@ -25,10 +25,10 @@ main .right {
   flex-basis: 50%;
   border-radius: 1.5rem;
 }
-main .left{
+main .left {
   background-color: #000000;
   position: relative;
-} 
+}
 
 .left .code,
 .code pre,
@@ -38,9 +38,7 @@ main .left{
   margin: 0;
   border-radius: 0.7rem;
   background-color: #000000;
-
 }
- 
 
 main .left .review {
   position: absolute;
@@ -53,15 +51,14 @@ main .left .review {
   cursor: pointer;
   user-select: none;
   border-radius: 0.6rem;
-
 }
 
-main .right{
+main .right {
   background-color: #343434;
   padding: 1rem 2rem;
   font-size: 1.5rem;
   overflow: auto;
-
+  position: relative;
 }
 
 /* Light theme ke liye */
@@ -173,4 +170,3 @@ button:hover {
   border-color: #555;
   color: #eee;
 }
-
