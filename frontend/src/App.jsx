@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
+import "highlight.js/styles/github-dark.css";
 import "prismjs/themes/prism-tomorrow.css";
-import Editor from "react-simple-code-editor";
+import "./App.css";
+
+import { useEffect, useState } from "react";
+
+import axios from "axios";
 import prism from "prismjs";
 import Markdown from "react-markdown";
+import Editor from "react-simple-code-editor";
 import rehypeHighlight from "rehype-highlight";
-import "highlight.js/styles/github-dark.css";
-import axios from "axios";
-import "./App.css";
+import Loader from "./components/Loader";
 
 function App() {
   console.log("💡 BACKEND URL:", import.meta.env.VITE_BACKEND_URL);
@@ -121,15 +124,16 @@ function App() {
             ></textarea>
             <button onClick={explainDSA}>📘 Explain DSA</button>
             <div className="dsa-result">
-              <Markdown rehypePlugins={[rehypeHighlight]}>
-                {dsaResult}
-              </Markdown>
+              <Markdown rehypePlugins={[rehypeHighlight]}>{dsaResult}</Markdown>
             </div>
           </div>
         </div>
 
         <div className="right">
-          <Markdown rehypePlugins={[rehypeHighlight]}>{review}</Markdown>
+          <>
+            {loading && <Loader />}
+            <Markdown rehypePlugins={[rehypeHighlight]}>{review}</Markdown>
+          </>
         </div>
       </main>
     </>
