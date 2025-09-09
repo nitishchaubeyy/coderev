@@ -7,6 +7,17 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import axios from "axios";
 import "./App.css";
+const BACKEND_URL = "http://localhost:3000"; // 👈 local backend
+
+const reviewCode = async () => {
+  try {
+    const res = await axios.post(`${BACKEND_URL}/ai/get-review`, { code });
+    setReview(res.data);
+  } catch (err) {
+    console.error("Review error:", err);
+  }
+};
+
 
 function App() {
   console.log("💡 BACKEND URL:", import.meta.env.VITE_BACKEND_URL);
@@ -129,7 +140,16 @@ function App() {
         </div>
 
         <div className="right">
+          {loading ? (
+          // 🔄 Skeleton Loader
+          <div className="skeleton-loader">
+          <div className="skeleton-line"></div>
+          <div className="skeleton-line"></div>
+          <div className="skeleton-line short"></div>
+        </div>
+        ) : (
           <Markdown rehypePlugins={[rehypeHighlight]}>{review}</Markdown>
+          )}
         </div>
       </main>
     </>
