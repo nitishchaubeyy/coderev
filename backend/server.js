@@ -1,4 +1,5 @@
 require('dotenv').config()
+console.log("Check API Key:", process.env.GOOGLE_GEMINI_KEY ? "Loaded ✅" : "Not Loaded ❌");
 const app = require('./src/app')
 
 

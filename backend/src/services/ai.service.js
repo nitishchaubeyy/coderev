@@ -4,7 +4,7 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_KEY);
 
 // Existing Model for Code Review
 const reviewModel = genAI.getGenerativeModel({
-  model: "gemini-2.0-flash",
+  model: "gemini-flash-latest",
   systemInstruction: `
 AI System Instruction: Senior Code Reviewer (7+ Years of Experience)
 
@@ -77,7 +77,7 @@ Tumhara mission hai: har code ko high standards pe evaluate karna — taaki deve
 
 // New Model for DSA Explanation
 const dsaModel = genAI.getGenerativeModel({
-  model: "gemini-2.0-flash",
+  model: "gemini-flash-latest",
   systemInstruction: `
 You are a skilled software mentor with deep knowledge of Data Structures and Algorithms (DSA). Your role is to explain the logic, purpose, and complexity of any given DSA code in clear Hinglish (Hindi + English mix), especially for students or beginners.
 
