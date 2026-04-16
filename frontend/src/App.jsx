@@ -7,29 +7,16 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import axios from "axios";
 import "./App.css";
-const BACKEND_URL = "http://localhost:3000"; // 👈 local backend
-
-const reviewCode = async () => {
-  try {
-    const res = await axios.post(`${BACKEND_URL}/ai/get-review`, { code });
-    setReview(res.data);
-  } catch (err) {
-    console.error("Review error:", err);
-  }
-};
-
 
 function App() {
-  console.log("💡 BACKEND URL:", import.meta.env.VITE_BACKEND_URL);
-
-  const [code, setCode] = useState(`function sum(){
-  return 1+1
+  const [code, setCode] = useState(`function sum() {
+  return 1 + 1;
 }`);
   const [review, setReview] = useState("");
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
 
-  // ✅ DSA Explainer
+  // ✅ DSA Explainer States
   const [dsaPrompt, setDsaPrompt] = useState("");
   const [dsaResult, setDsaResult] = useState("");
 
@@ -54,6 +41,8 @@ function App() {
   }
 
   async function explainDSA() {
+    if (!dsaPrompt.trim()) return alert("Please enter a topic!");
+    
     setDsaResult("⏳ Generating explanation...");
     try {
       const response = await axios.post(
@@ -70,87 +59,77 @@ function App() {
   return (
     <>
       <button
+        className="theme-toggle"
         onClick={() => setDarkMode(!darkMode)}
         style={{
-          position: "absolute",
-          top: "10px",
-          right: "20px",
-          padding: "8px 14px",
-          borderRadius: "8px",
           background: darkMode ? "#fff" : "#333",
           color: darkMode ? "#333" : "#fff",
-          border: "none",
-          cursor: "pointer",
-          zIndex: 10,
         }}
       >
         {darkMode ? "🌞 Light Mode" : "🌙 Dark Mode"}
       </button>
 
       <main className={darkMode ? "dark" : "light"}>
-        <div className="left">
-          <div className="code">
-            <Editor
-              value={code}
-              onValueChange={(code) => setCode(code)}
-              highlight={(code) =>
-                prism.highlight(code, prism.languages.javascript, "javascript")
-              }
-              padding={10}
-              style={{
-                fontFamily: '"Fira code", "Fira Mono", monospace',
-                fontSize: 16,
-                border: "1px solid #ddd",
-                borderRadius: "5px",
-                height: "100%",
-                width: "100%",
-              }}
-            />
+        {/* Top Section: Code Editor and Review Output side-by-side */}
+        <section className="review-container">
+          <div className="left">
+            <div className="code">
+              <Editor
+                value={code}
+                onValueChange={(newCode) => setCode(newCode)}
+                highlight={(code) =>
+                  prism.highlight(code, prism.languages.javascript, "javascript")
+                }
+                padding={10}
+                className="code-editor"
+                style={{
+                  fontFamily: '"Fira code", "Fira Mono", monospace',
+                  fontSize: 16,
+                }}
+              />
+            </div>
+            <div
+              onClick={!loading ? reviewCode : null}
+              className={`review ${loading ? "disabled" : ""}`}
+            >
+              {loading ? "🔄 Reviewing..." : "🚀 Review Code"}
+            </div>
           </div>
 
-          <div
-            onClick={!loading ? reviewCode : null}
-            className={`review ${loading ? "disabled" : ""}`}
-          >
-            {loading ? "🔄 Reviewing..." : "🚀 Review"}
+          <div className="right">
+            {loading ? (
+              <div className="skeleton-loader">
+                <div className="skeleton-line"></div>
+                <div className="skeleton-line"></div>
+                <div className="skeleton-line short"></div>
+                <div className="skeleton-line"></div>
+              </div>
+            ) : (
+              <Markdown rehypePlugins={[rehypeHighlight]}>
+                {review || "### Review results will appear here..."}
+              </Markdown>
+            )}
           </div>
+        </section>
 
-          {/* ✅ DSA Explainer */}
+        {/* Bottom Section: DSA Explainer taking full width below */}
+        <section className="dsa-section">
           <div className="dsa-explainer">
             <h2>🧠 DSA Explainer</h2>
             <textarea
-              placeholder="Enter your DSA question here..."
+              placeholder="Enter your DSA question or topic here..."
               value={dsaPrompt}
               onChange={(e) => setDsaPrompt(e.target.value)}
-              rows={5}
-              style={{
-                width: "100%",
-                padding: "10px",
-                fontSize: "16px",
-                marginBottom: "10px",
-              }}
+              rows={4}
             ></textarea>
-            <button onClick={explainDSA}>📘 Explain DSA</button>
+            <button className="dsa-btn" onClick={explainDSA}>📘 Explain DSA</button>
             <div className="dsa-result">
               <Markdown rehypePlugins={[rehypeHighlight]}>
                 {dsaResult}
               </Markdown>
             </div>
           </div>
-        </div>
-
-        <div className="right">
-          {loading ? (
-          // 🔄 Skeleton Loader
-          <div className="skeleton-loader">
-          <div className="skeleton-line"></div>
-          <div className="skeleton-line"></div>
-          <div className="skeleton-line short"></div>
-        </div>
-        ) : (
-          <Markdown rehypePlugins={[rehypeHighlight]}>{review}</Markdown>
-          )}
-        </div>
+        </section>
       </main>
     </>
   );
